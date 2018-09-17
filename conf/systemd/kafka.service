@@ -1,0 +1,15 @@
+[Unit]
+Description=Apache Kafka
+Documentation=http://kafka.apache.org/10/documentation.html
+Requires=zookeeper.service network.target remote-fs.target
+After=zookeeper.service network.target remote-fs.target
+
+[Service]
+User=www-data
+Group=www-data
+ExecStart=/opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/server.properties
+ExecStop=/opt/kafka/bin/kafka-server-stop.sh
+ExecStopPost=/opt/kafka/bin/zookeeper-server-stop.sh
+
+[Install]
+WantedBy=multi-user.target
