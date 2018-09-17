@@ -3,9 +3,9 @@ Advanced `.bashrc` setup
 
 ```bash
 
-# Upgrade prompt for git, venv and pyenv
+# == Upgrade prompt for git, venv and pyenv == #
 
-# Colors for `echo` command
+# colors for `echo` command
 txtblk='\033[0;30m' # Black
 txtred='\033[0;31m' # Red
 txtgrn='\033[0;32m' # Green
@@ -16,7 +16,7 @@ txtcyn='\033[0;36m' # Cyan
 txtwht='\033[0;37m' # White
 txtrst='\033[00m'   # Reset
 
-# Colors for `prompt` integration
+# colors for `prompt` integration
 prompt_blk="\[${txtblk}\]" # Black
 prompt_red="\[${txtred}\]" # Red
 prompt_grn="\[${txtgrn}\]" # Green
@@ -45,15 +45,25 @@ PS1+="\$(if [[ \$(is_git_env)   ]]; then printf '%s' \"${prompt_wht}\$(is_git_en
 PS1+="${prompt_ylw}\w${prompt_cyn}> ${prompt_rst}"
 
 # source command does not work with parent shell, in this case it is PROMPT_COMMAND
-venv_alive() {
-    # used virtual environments: .env, env, .venv, venv
+alive() {
     if   [ -d   "env" ]; then source   env/bin/activate
     elif [ -d  ".env" ]; then source  .env/bin/activate
     elif [ -d  "venv" ]; then source  venv/bin/activate
     elif [ -d ".venv" ]; then source .venv/bin/activate
-    else deactivate &> /dev/null || true  # for suppress returned code 1
     fi
 }
-PROMPT_COMMAND="venv_alive"
+
+dead() {
+    deactivate &> /dev/null || true  # for suppress returned code 1
+}
+
+PROMPT_COMMAND="alive"
+
+# == Aliases == #
+alias v27='virtualenv -p python2.7 .env && source .env/bin/activate'
+alias v35='virtualenv -p python3.5 .env && source .env/bin/activate'
+alias v36='virtualenv -p python3.6 .env && source .env/bin/activate'
+
+alias up='sudo apt -y update && sudo apt -y upgrade && sudo apt -y autoclean && sudo apt -y autoremove'
 
 ```
